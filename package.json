@@ -1,0 +1,35 @@
+{
+  "name": "givex-js",
+  "version": "0.0.1",
+  "description": "Javascript library for Disco Labs' Givex Integration for Shopify.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/discolabs/givex-js.git"
+  },
+  "keywords": [
+    "givex",
+    "shopify"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "prepublishOnly": "vite build",
+    "serve": "vite preview"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/givex.umd.js",
+  "module": "./dist/givex.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/givex.es.js",
+      "require": "./dist/givex.umd.js"
+    }
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@preact/preset-vite": "^2.2.0",
+    "vite": "^2.9.9"
+  }
+}
