@@ -1,0 +1,9 @@
+<script id="givex-config" type="application/json">
+  {
+    "authentication": {
+      "shop": "{{ shop.permanent_domain }}"
+    },
+    "environment": "{{ shop.metafields.givex.environment }}"
+  }
+</script>
+<script type="text/javascript" src="{{ shop.metafields.givex.cdn_url | default: 'https://cdn.jsdelivr.net/npm/givex-js@0.0.1/dist/givex.js' }}"></script>
