@@ -3,7 +3,12 @@
     "authentication": {
       "shop": "{{ shop.permanent_domain }}"
     },
-    "environment": "{{ shop.metafields.givex.environment }}"
+    "card_code_length": {{ shop.metafields.givex.card_code_length | default: 20 |  plus: 0 }},{% if checkout %}
+    "checkout": {
+      "total_price": "{{ checkout.total_price | money_without_currency }}"
+    },{% endif %}
+    "environment": "{{ shop.metafields.givex.environment }}",
+    "security_code_policy": "{{ shop.metafields.givex.security_code_policy }}"
   }
 </script>
 <script type="text/javascript" src="{{ shop.metafields.givex.cdn_url | default: 'https://cdn.jsdelivr.net/npm/givex-js@0.0.1/dist/givex.js' }}"></script>
