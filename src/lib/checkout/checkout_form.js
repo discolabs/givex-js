@@ -35,8 +35,6 @@ export class CheckoutForm {
       this.securityCodeInputElement = formElement.querySelector(SELECTOR_SECURITY_CODE_INPUT);
     }
 
-    this.debug('wa()', this.securityCodeInputElement);
-
     // register event listeners
     this.inputElement.addEventListener('input', this.handleInput.bind(this));
     this.formElement.addEventListener('submit', this.handleSubmit.bind(this));
@@ -63,7 +61,7 @@ export class CheckoutForm {
   handleSubmit(e) {
     this.debug('handleSubmit()', e);
 
-    const { formElement, potentialGivexCard, inputElement, pinElement, submitElement, api, config } = this;
+    const { formElement, potentialGivexCard, inputElement, securityCodeInputElement, submitElement, api, config } = this;
 
     // don't prevent submission if no chance of a Givex card
     if(!potentialGivexCard) {
@@ -78,13 +76,19 @@ export class CheckoutForm {
     // prevent form submission
     e.preventDefault();
 
+    // if the security code input is present and empty, focus it and return
+    if(securityCodeInputElement && securityCodeInputElement.value.trim().length === 0) {
+      securityCodeInputElement.focus();
+      return false;
+    }
+
     // add loading spinner and disable the button to prevent resubmission.
     submitElement.classList.add('btn--loading');
     submitElement.disabled = true;
 
     // build values for preauthorisation request
     const number = inputElement.value;
-    const pin = pinElement ? pinElement.value : null;
+    const pin = securityCodeInputElement ? securityCodeInputElement.value : null;
     const amount = config.checkout.total_price;
 
     // make preauthorisation request
@@ -100,11 +104,29 @@ export class CheckoutForm {
   handlePreauthSuccess(result) {
     this.debug('handlePreauthSuccess()', result);
 
+    const { inputElement } = this;
+
+    const hiddenInput = document.createElement('input');
+    hiddenInput.type = 'hidden';
+    hiddenInput.name = 'checkout[reduction_code]';
+    hiddenInput.value = result.voucher_number;
+
+    inputElement.after(hiddenInput);
+
+    this.handlePreauthComplete();
   }
 
   handlePreauthFailure(error) {
     this.debug('handlePreauthFailure()', error);
 
+    this.handlePreauthComplete();
+  }
+
+  handlePreauthComplete() {
+    this.debug('handlePreauthComplete()');
+
+    const { formElement } = this;
+    formElement.dataset.forceSubmit = 'true';
   }
 
   isPotentialGivexCard(value) {
