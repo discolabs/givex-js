@@ -1,27 +1,21 @@
 // Constants for possible HTTP methods.
 const GET = 'get';
 
-// API endpoints across environments
-const API_ENDPOINTS = {
-  production: 'https://givex-integration.discolabs.com/api/v1',
-  staging: 'https://givex-integration-staging.discolabs.com/api/v1'
-};
-
 // API methods with their method and path
 const API_METHODS = {
   check_balance: {
     http_method: GET,
-    endpoint: '/balance.json'
+    path: '/balance.json'
   },
   preauth: {
     http_method: GET,
-    endpoint: '/preauth.json'
+    path: '/preauth.json'
   }
 }
 
 // Return the appropriate API URL for the given environment and API method
-const getUrl = (environment, method) => {
-  return `${API_ENDPOINTS[environment]}${API_METHODS[method].endpoint}`;
+const getUrl = (endpoint, method) => {
+  return `${endpoint}${API_METHODS[method].path}`;
 }
 
 // Return the appropriate HTTP method (GET, POST, DELETE etc) for the given API method
@@ -34,7 +28,7 @@ const getQueryParams = (authentication, params) => {
   return Object.assign({}, authentication, params);
 };
 
-// Return a querystring that can be appended to an API endpoint
+// Return a querystring that can be appended to an API URL
 const buildQueryString = (params) => {
   const queryString = Object.keys(params)
     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
@@ -45,14 +39,14 @@ const buildQueryString = (params) => {
 
 export class ApiClient {
 
-  constructor({ authentication, environment }) {
+  constructor({ authentication, endpoint }) {
     this.authentication = authentication;
-    this.environment = environment;
+    this.endpoint = endpoint;
   }
 
   // Execute an API request against the Givex Integration API
   execute({ method, params, onSuccess, onFailure }) {
-    const url = getUrl(this.environment, method);
+    const url = getUrl(this.endpoint, method);
     const httpMethod = getHttpMethod(method);
     const queryParams = getQueryParams(this.authentication, params);
 

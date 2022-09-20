@@ -1,4 +1,12 @@
-import { SELECTOR_DISCOUNT_INPUT, SELECTOR_FIELDSET, SELECTOR_SUBMIT_BUTTON } from "../constants";
+import {
+  SECURITY_CODE_POLICY_IS_OPTIONAL,
+  SECURITY_CODE_POLICY_IS_REQUIRED,
+  SELECTOR_DISCOUNT_INPUT,
+  SELECTOR_FIELDSET,
+  SELECTOR_SECURITY_CODE_INPUT,
+  SELECTOR_SUBMIT_BUTTON
+} from "../constants";
+import { renderHtmlTemplate } from "../helpers";
 
 export class CheckoutForm {
 
@@ -12,12 +20,22 @@ export class CheckoutForm {
   }
 
   initialise() {
+    this.debug('initialise()');
+
     const { formElement } = this;
 
     // store references to other elements
     this.inputElement = formElement.querySelector(SELECTOR_DISCOUNT_INPUT);
     this.fieldsetElement = this.inputElement.closest(SELECTOR_FIELDSET);
     this.submitElement = formElement.querySelector(SELECTOR_SUBMIT_BUTTON);
+
+    // render the security code input if required and retain a reference to it
+    if(this.config.security_code_policy === SECURITY_CODE_POLICY_IS_REQUIRED || this.config.security_code_policy === SECURITY_CODE_POLICY_IS_OPTIONAL) {
+      this.renderSecurityCode();
+      this.securityCodeInputElement = formElement.querySelector(SELECTOR_SECURITY_CODE_INPUT);
+    }
+
+    this.debug('wa()', this.securityCodeInputElement);
 
     // register event listeners
     this.inputElement.addEventListener('input', this.handleInput.bind(this));
@@ -27,12 +45,24 @@ export class CheckoutForm {
     formElement.dataset.givex = 'true';
   }
 
+  renderSecurityCode() {
+    const { config } = this;
+    renderHtmlTemplate(config, this.fieldsetElement, 'checkout_security_code');
+  }
+
   handleInput(e) {
+    this.debug('handleInput()', e);
+
     this.potentialGivexCard = this.isPotentialGivexCard(this.inputElement.value);
+
+    this.debug('potentialGivexCard', this.potentialGivexCard);
+
     this.formElement.classList.toggle('is-potential-givex-card', this.potentialGivexCard);
   }
 
   handleSubmit(e) {
+    this.debug('handleSubmit()', e);
+
     const { formElement, potentialGivexCard, inputElement, pinElement, submitElement, api, config } = this;
 
     // don't prevent submission if no chance of a Givex card
@@ -68,16 +98,28 @@ export class CheckoutForm {
   }
 
   handlePreauthSuccess(result) {
+    this.debug('handlePreauthSuccess()', result);
 
   }
 
   handlePreauthFailure(error) {
+    this.debug('handlePreauthFailure()', error);
 
   }
 
   isPotentialGivexCard(value) {
+    this.debug('isPotentialGivexCard()', value);
+
     const cleanValue = value.replace(/\D/g, '');
-    return cleanValue >= 21;
+    return cleanValue.length >= this.config.card_code_length;
+  }
+
+  debug(...args) {
+    if(!this.config.debug) {
+      return;
+    }
+
+    console.log('[Givex CheckoutForm]', ...args);
   }
 
 }

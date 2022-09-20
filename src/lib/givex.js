@@ -4,8 +4,9 @@ import { Checkout } from "./checkout/checkout";
 export class Givex {
 
   constructor(document, Shopify, config = {}) {
-    this.api = new ApiClient(config);
-    this.checkout = new Checkout(document, Shopify, config);
+    const api = new ApiClient(config);
+    this.api = api;
+    this.checkout = new Checkout(document, Shopify, api, config);
   }
 
 }

@@ -1,14 +1,94 @@
+{%- comment -%}
+
+  givex-js.liquid
+
+  The default Liquid snippet implementation for Disco Labs' Givex Integration.
+  Learn more at https://givex.discolabs.com.
+
+{%- endcomment -%}
+
+{%- comment -%}
+  Variables used by the snippet below.
+{%- endcomment -%}
+{%- liquid
+
+  assign DEFAULT_CARD_CODE_LENGTH = 20
+  assign DEFAULT_CDN_URL = 'https://cdn.jsdelivr.net/npm/givex-js@0.0.1/dist/givex.js'
+  assign DEFAULT_ENDPOINT = 'https://givex-integration.discolabs.com/api/v1'
+  assign DEFAULT_SECURITY_CODE_POLICY = 'security_code_is_required'
+
+-%}
+
+{%- comment -%}
+  HTML templates that may be rendered by the integration.
+{%- endcomment -%}
+{%- capture HTML_TEMPLATE_CHECKOUT_SECURITY_CODE -%}
+  <div class="fieldset fieldset--security-code">
+    <div class="field">
+      <div class="field__input-btn-wrapper">
+        <div class="field__input-wrapper">
+          <label class="field__label field__label--visible" for="checkout_security_code">{{ 'givex.checkout.security_code_label' | t }}</label>
+          <input placeholder="{{ 'givex.checkout.security_code_placeholder' | t }}" class="field__input" autocomplete="off" aria-required="true" size="4" type="text" name="checkout[security_code]" id="checkout_security_code" aria-label="{{ 'givex.checkout.security_code_label' | t }}" />
+        </div>
+
+        <button type="button" class="field__input-btn field__input-btn--spacer btn btn--disabled" disabled="disabled">
+          <span class="btn__content visually-hidden-on-mobile">{{ 'givex.checkout.apply' | t }}</span>
+          <i class="btn__content shown-on-mobile icon icon--arrow"></i>
+          <i class="btn__spinner icon icon--button-spinner"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+{%- endcapture -%}
+
+{%- comment -%}
+  Attempt to parse translations as a JSON object.
+{%- endcomment -%}
+{%- capture givex_translations %}{{ 'givex' | t | replace: '&quot;', '"' | replace: '=&gt;', ':' }}{% endcapture -%}
+{%- liquid
+
+  if givex_translations contains 'translation missing'
+    assign givex_translations = '{}'
+  endif
+
+-%}
+
+{%- comment -%}
+  Render the (very minimal) styles used by the Givex integration.
+{%- endcomment -%}
+<style>
+  .fieldset--security-code {
+    display: none;
+  }
+
+  .is-potential-givex-card .fieldset--security-code {
+    display: block;
+  }
+</style>
+
+{%- comment -%}
+  Render the Givex configuration as a JSON object.
+{%- endcomment -%}
 <script id="givex-config" type="application/json">
   {
     "authentication": {
       "shop": "{{ shop.permanent_domain }}"
     },
-    "card_code_length": {{ shop.metafields.givex.card_code_length | default: 20 |  plus: 0 }},{% if checkout %}
+    "card_code_length": {{ shop.metafields.givex.card_code_length | default: DEFAULT_CARD_CODE_LENGTH |  plus: 0 }},{% if checkout %}
     "checkout": {
       "total_price": "{{ checkout.total_price | money_without_currency }}"
     },{% endif %}
-    "environment": "{{ shop.metafields.givex.environment }}",
-    "security_code_policy": "{{ shop.metafields.givex.security_code_policy }}"
+    "debug": {{ shop.metafields.givex.debug | json }},
+    "endpoint": "{{ shop.metafields.givex.endpoint | default: DEFAULT_ENDPOINT }}",
+    "security_code_policy": "{{ shop.metafields.givex.security_code_policy |  default: DEFAULT_SECURITY_CODE_POLICY }}",
+    "templates": {
+      "checkout_security_code": {{ HTML_TEMPLATE_CHECKOUT_SECURITY_CODE | json }}
+    },
+    "translations": {{ givex_translations }}
   }
 </script>
-<script type="text/javascript" src="{{ shop.metafields.givex.cdn_url | default: 'https://cdn.jsdelivr.net/npm/givex-js@0.0.1/dist/givex.js' }}"></script>
+
+{%- comment -%}
+  Load the Givex JS library.
+{%- endcomment -%}
+<script type="text/javascript" src="{{ shop.metafields.givex.cdn_url | default: DEFAULT_CDN_URL }}" async></script>

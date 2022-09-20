@@ -5,6 +5,7 @@ import {
   STEP_SHIPPING_METHOD
 } from "../constants";
 import { CheckoutForm } from "./checkout_form";
+import { renderHtmlTemplate } from "../helpers";
 
 const SUPPORTED_STEPS = [
   STEP_CONTACT_INFORMATION,
@@ -24,12 +25,16 @@ export class Checkout {
   }
 
   initialise() {
+    this.debug('initialise()');
+
     const { document, Shopify, api, config } = this;
 
     // if we're not in the Shopify checkout on a supported step, return
     if(!Shopify || !Shopify.Checkout || !SUPPORTED_STEPS.includes(Shopify.Checkout.step)) {
       return;
     }
+
+    this.debug('on supported step');
 
     // define an event handler for page changes
     const handlePageChange = () => {
@@ -48,6 +53,12 @@ export class Checkout {
     document.addEventListener('page:change', handlePageChange);
   }
 
+  debug(...args) {
+    if(!this.config.debug) {
+      return;
+    }
 
+    console.log('[Givex Checkout]', ...args);
+  }
 
 }
