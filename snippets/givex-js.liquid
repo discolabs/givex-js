@@ -32,7 +32,7 @@
         </div>
 
         <button type="button" class="field__input-btn field__input-btn--spacer btn btn--disabled" disabled="disabled">
-          <span class="btn__content visually-hidden-on-mobile">{{ 'givex.checkout.apply' | t }}</span>
+          <span class="btn__content visually-hidden-on-mobile">{{ 'shopify.checkout.order_summary.apply_discount_button_label' | t }}</span>
           <i class="btn__content shown-on-mobile icon icon--arrow"></i>
           <i class="btn__spinner icon icon--button-spinner"></i>
         </button>
@@ -59,6 +59,10 @@
 <style>
   .fieldset--security-code {
     display: none;
+  }
+
+  .field__input-btn--spacer {
+    visibility: hidden;
   }
 
   .is-potential-givex-card .fieldset--security-code {

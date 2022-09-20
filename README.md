@@ -82,3 +82,19 @@ givex.api.preauth({
   }
 });
 ```
+
+### Translations
+All text rendered by the library is translatable via Shopify's default locale functionality -- indeed, there's an expectation that translation keys will be added to the store's default locale file, whether that's `en.default.json` or something else.
+
+To apply the default translations, the following can be copied as a top-level object to the store's default locale file:
+
+```json
+{
+  "givex": {
+    "checkout": {
+      "security_code_label": "Gift card? Enter PIN",
+      "security_code_placeholder": "Gift card? Enter PIN"
+    }
+  }
+}
+```
