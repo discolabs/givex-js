@@ -15,7 +15,7 @@ The simplest method for integration is to load the compiled and distributed `giv
     "environment": "staging"
   }
 </script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/givex-js@0.0.1/dist/givex.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/givex-js@0.1.0/dist/givex.js"></script>
 ```
 
 The easiest way to do this if you're using a Liquid-based Shopify theme is to copy-paste the Liquid snippet found in `snippets/givex-js.liquid` into your theme, and then rendering that snippet in your `theme.liquid` and `checkout.liquid`:
