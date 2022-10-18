@@ -1,5 +1,5 @@
 import {
-  SELECTOR_REDUCTION_FORM,
+  SELECTOR_REDUCTION_FORM_WRAPPER,
   STEP_CONTACT_INFORMATION,
   STEP_PAYMENT_METHOD,
   STEP_SHIPPING_METHOD
@@ -38,13 +38,13 @@ export class Checkout {
 
     // define an event handler for page changes
     const handlePageChange = () => {
-      document.querySelectorAll(SELECTOR_REDUCTION_FORM).forEach(formElement => {
-        // skip if the form is already initialised
-        if(formElement.dataset.givex === 'true') {
+      document.querySelectorAll(SELECTOR_REDUCTION_FORM_WRAPPER).forEach(formWrapperElement => {
+        // skip if the form wrapper is already initialised
+        if(formWrapperElement.dataset.givex === 'true') {
           return;
         }
 
-        new CheckoutForm(formElement, api, config);
+        new CheckoutForm(formWrapperElement, api, config);
       });
     };
 
