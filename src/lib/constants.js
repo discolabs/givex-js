@@ -4,7 +4,8 @@ export const STEP_PAYMENT_METHOD = 'payment_method';
 
 export const SELECTOR_DISCOUNT_INPUT = '[data-discount-field="true"]';
 export const SELECTOR_FIELDSET = '.fieldset';
-export const SELECTOR_REDUCTION_FORM = '[data-reduction-form]';
+export const SELECTOR_FORM = 'form';
+export const SELECTOR_REDUCTION_FORM_WRAPPER = '[data-reduction-form]';
 export const SELECTOR_SECURITY_CODE_INPUT = '[name="checkout[security_code]"]';
 export const SELECTOR_SUBMIT_BUTTON = '[type="submit"]';
 
