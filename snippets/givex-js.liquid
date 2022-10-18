@@ -82,7 +82,7 @@
     "checkout": {
       "total_price": "{{ checkout.total_price | money_without_currency }}"
     },{% endif %}
-    "debug": {{ shop.metafields.givex.debug | json }},
+    "debug": {{ shop.metafields.givex.debug | default: 'false' }},
     "endpoint": "{{ shop.metafields.givex.endpoint | default: DEFAULT_ENDPOINT }}",
     "security_code_policy": "{{ shop.metafields.givex.security_code_policy |  default: DEFAULT_SECURITY_CODE_POLICY }}",
     "templates": {
