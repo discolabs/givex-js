@@ -20,7 +20,7 @@
 -%}
 
 {%- comment -%}
-  HTML templates that may be rendered by the integration.
+  HTML templates that may be rendered by the integration on the checkout or balance checker pages.
 {%- endcomment -%}
 {%- capture HTML_TEMPLATE_CHECKOUT_SECURITY_CODE -%}
   <div class="fieldset fieldset--security-code">
@@ -38,6 +38,24 @@
         </button>
       </div>
     </div>
+  </div>
+{%- endcapture -%}
+
+{%- capture HTML_TEMPLATE_BALANCE_CHECKER_LOADING -%}
+  <div>
+    {{ 'givex.balance_checker.loading' | t }}
+  </div>
+{%- endcapture -%}
+
+{%- capture HTML_TEMPLATE_BALANCE_CHECKER_SUCCESS -%}
+  <div>
+    {% raw %}{{ message }}{% endraw %}
+  </div>
+{%- endcapture -%}
+
+{%- capture HTML_TEMPLATE_BALANCE_CHECKER_ERROR -%}
+  <div>
+    {% raw %}{{ message }}{% endraw %}
   </div>
 {%- endcapture -%}
 
@@ -86,7 +104,10 @@
     "endpoint": "{{ shop.metafields.givex.endpoint | default: DEFAULT_ENDPOINT }}",
     "security_code_policy": "{{ shop.metafields.givex.security_code_policy |  default: DEFAULT_SECURITY_CODE_POLICY }}",
     "templates": {
-      "checkout_security_code": {{ HTML_TEMPLATE_CHECKOUT_SECURITY_CODE | json }}
+      "checkout_security_code": {{ HTML_TEMPLATE_CHECKOUT_SECURITY_CODE | json }},
+      "balance_checker_loading": {{ HTML_TEMPLATE_BALANCE_CHECKER_LOADING | json }},
+      "balance_checker_success": {{ HTML_TEMPLATE_BALANCE_CHECKER_SUCCESS | json }},
+      "balance_checker_error": {{ HTML_TEMPLATE_BALANCE_CHECKER_ERROR | json }}
     },
     "translations": {{ givex_translations }}
   }
