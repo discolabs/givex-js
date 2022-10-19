@@ -2,6 +2,12 @@ export const STEP_CONTACT_INFORMATION = 'contact_information';
 export const STEP_SHIPPING_METHOD = 'shipping_method';
 export const STEP_PAYMENT_METHOD = 'payment_method';
 
+export const SELECTOR_BALANCE_CHECKER_FORM = '[data-givex-balance-checker="form"]';
+export const SELECTOR_BALANCE_CHECKER_NUMBER = '[data-givex-balance-checker="number"]';
+export const SELECTOR_BALANCE_CHECKER_PIN = '[data-givex-balance-checker="pin"]';
+export const SELECTOR_BALANCE_CHECKER_RESULT = '[data-givex-balance-checker="result"]';
+export const SELECTOR_BALANCE_CHECKER_SUBMIT = '[data-givex-balance-checker="submit"]';
+
 export const SELECTOR_DISCOUNT_INPUT = '[data-discount-field="true"]';
 export const SELECTOR_FIELDSET = '.fieldset';
 export const SELECTOR_FORM = 'form';
