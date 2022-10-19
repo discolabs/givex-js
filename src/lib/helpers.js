@@ -6,10 +6,18 @@ export const parseJSONScript = (document, id) => {
   } catch { return null; }
 };
 
-// render a HTML template after the given target element
-export const renderHtmlTemplate = (config, targetElement, templateName) => {
-  const templateDocument = new DOMParser().parseFromString(config.templates[templateName], 'text/html');
+// render a HTML template after the given target element, with optional context interpolation
+// the newly rendered element is returned
+export const renderHtmlTemplate = (config, targetElement, templateName, context = {}, renderMethod = 'after') => {
+  const interpolatedTemplate = Object.entries(context).reduce((output, value) => {
+    const [k, v] = value;
+    return output.replace(new RegExp(`{{ ${k} }}`, 'g'), v);
+  }, config.templates[templateName]);
+
+  const templateDocument = new DOMParser().parseFromString(interpolatedTemplate, 'text/html');
   const templateElement = templateDocument.querySelector('body > *');
 
-  targetElement.after(templateElement);
+  targetElement[renderMethod](templateElement);
+
+  return templateElement;
 };
