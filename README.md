@@ -18,7 +18,7 @@ The simplest method for integration is to load the compiled and distributed `giv
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/givex-js@0.2.0/dist/givex.js"></script>
 ```
 
-The easiest way to do this if you're using a Liquid-based Shopify theme is to copy-paste the Liquid snippet found in `snippets/givex-js.liquid` into your theme, and then rendering that snippet in your `theme.liquid` and `checkout.liquid`:
+The easiest way to do this if you're using a Liquid-based Shopify theme is to copy-paste the Liquid snippet found in `snippets/givex-js.liquid` into your theme, and then render that snippet in your `theme.liquid` and `checkout.liquid`:
 
 ```liquid
 <head>
@@ -110,6 +110,7 @@ If these are present, then when a user submits the form via button click or hitt
 The result of the balance check lookup will be rendered into the `<div data-givex-balance-checker="result">` DOM element.
 If you'd like to customise how that rendered message is displayed, you can update the default templates in `givex-js.liquid`.
 
+The most common approach we've seen for balance checkers is to create a new specific page template in your theme (`page.balance-checker.liquid` or `page.balance-checker.json`) and create a dedicated balance checker page on your store.
 
 ### Translations
 All text rendered by the library is translatable via Shopify's default locale functionality -- indeed, there's an expectation that translation keys will be added to the store's default locale file, whether that's `en.default.json` or something else.
@@ -119,6 +120,15 @@ To apply the default translations, the following can be copied as a top-level ob
 ```json
 {
   "givex": {
+    "balance_checker": {
+      "title": "Check your gift card balance",
+      "number_label": "Enter card number",
+      "number_placeholder": "Enter card number",
+      "security_code_label": "Enter PIN",
+      "security_code_placeholder": "Enter PIN",
+      "submit": "Submit",
+      "loading": "Checking balance..."
+    },
     "checkout": {
       "security_code_label": "Gift card? Enter PIN",
       "security_code_placeholder": "Gift card? Enter PIN"
