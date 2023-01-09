@@ -51,6 +51,9 @@ export class Checkout {
     // register event listeners for page changes
     document.addEventListener('page:load', handlePageChange);
     document.addEventListener('page:change', handlePageChange);
+
+    // attempt immediate initialisation in case the page is already ready
+    handlePageChange();
   }
 
   debug(...args) {
